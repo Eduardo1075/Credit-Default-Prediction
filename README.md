@@ -119,3 +119,31 @@ O pipeline adotado neste projeto segue a metodologia **CRISP-DM (Cross Industry 
    Interpretação dos padrões encontrados, identificação dos fatores mais relevantes e proposta de estratégias de mitigação de risco.
 
 > Todas as etapas serão explicadas detalhadamente dentro do readme.md e nos notebooks, com o racional por trás das decisões tomadas em cada fase do desenvolvimento.
+
+## 5. Análise das variáveis idade e limite de crédito
+![histograma](images/transferir(19).png)
+## 📊 Histograma da variável `AGE` (Idade)
+
+### ✅ O que mostra:
+- A maioria dos clientes está na faixa entre **25 e 40 anos**.
+- A frequência **diminui gradualmente** após os 40.
+- Há **pouquíssimos clientes acima dos 60 anos**.
+
+### 📌 Conclusão:
+A base de dados é predominantemente composta por **adultos jovens e de meia-idade**. Pode ser interessante verificar:
+- Se a **inadimplência muda com a idade**.
+- Se essa variável tem **correlação com o comportamento de crédito**.
+
+---
+
+## 📊 Histograma da variável `LIMIT_BAL` (Limite de crédito)
+
+### ✅ O que mostra:
+- A maioria dos clientes tem limite de até **200.000**.
+- O pico ocorre abaixo de **100.000**, e vai **caindo à medida que o limite aumenta**.
+- Limites muito altos (**> 500.000**) são **raros**.
+
+### 📌 Conclusão:
+A distribuição é **assimétrica à direita** (muito concentrada em valores baixos). Isso indica que:
+- **Limites baixos são muito comuns**.
+- Poucos clientes têm acesso a **grandes linhas de crédito**.

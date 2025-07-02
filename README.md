@@ -118,4 +118,4 @@ O pipeline adotado neste projeto segue a metodologia **CRISP-DM (Cross Industry 
 8. **Conclusão e interpretação dos resultados**  
    Interpretação dos padrões encontrados, identificação dos fatores mais relevantes e proposta de estratégias de mitigação de risco.
 
-> Todas as etapas são explicadas detalhadamente dentro dos notebooks, com o racional por trás das decisões tomadas em cada fase do desenvolvimento.
+> Todas as etapas serão explicadas detalhadamente dentro do readme.md e nos notebooks, com o racional por trás das decisões tomadas em cada fase do desenvolvimento.

@@ -267,3 +267,46 @@ Você pode usar essa árvore:
 
 ---
 
+## 10. Desempenho do modelo vs. Profundidade da Árvore (max_depth)
+![Grafico](images/transferir(18).png)
+### O que o gráfico mostra:
+- O eixo X representa a profundidade máxima (`max_depth`) das árvores de decisão.
+- O eixo Y mostra o valor médio de **ROC AUC** — quanto maior, melhor.
+- As duas curvas mostram:
+  -  **Treinamento**: desempenho do modelo nos dados que ele viu.
+  -  **Teste**: desempenho em dados não vistos (validação cruzada).
+- As barras verticais representam o **desvio padrão** (±1 SD), indicando a **variação entre os folds**.
+
+### Conclusões:
+- De `max_depth = 1` até `6`, o desempenho de **teste** melhora — o modelo está capturando padrões úteis.
+- Após `max_depth = 6`, a **ROC AUC no teste começa a cair**, enquanto no treino **continua subindo**.
+  - Isso é um sinal claro de **overfitting**: o modelo aprende ruído dos dados de treino e perde capacidade de generalizar.
+- O melhor desempenho no teste ocorre em torno de `max_depth = 4` ou `6`.
+
+### Interpretação:
+- O gráfico mostra o clássico **trade-off entre viés e variância**:
+  - Árvores muito rasas (pouca profundidade) têm **viés alto** (subajuste).
+  - Árvores muito profundas têm **variância alta** (sobreajuste).
+- **`max_depth ≈ 4 a 6`** parece ser o melhor ponto de equilíbrio para este modelo.
+
+---
+
+## 11. Avaliação do número de árvores no modelo
+![Grafico](images/transferir(12).png)
+### Gráfico da Esquerda: Tempo médio de ajuste
+- Mostra quanto tempo o modelo leva para treinar, em segundos, conforme o número de árvores aumenta.
+- O tempo cresce quase linearmente com o número de árvores.
+- A partir de 60-70 árvores, o custo computacional começa a pesar (passa de 1 segundo).
+
+### Gráfico da Direita: AUC médio no teste (com desvio padrão)
+- A métrica ROC AUC no teste melhora até cerca de **20 a 30 árvores**.
+- Após isso, os ganhos **são muito pequenos** e a curva se estabiliza.
+- As barras de erro (±1 desvio padrão) mostram que a variação entre folds é significativa — os modelos com mais árvores não são necessariamente mais confiáveis.
+
+### Conclusão:
+- A partir de **30 árvores**, o modelo já atinge sua melhor performance média de ROC AUC.
+- Aumentar o número de árvores **aumenta o tempo de treinamento**, mas **não traz ganhos relevantes de desempenho**.
+- **Escolha ideal:** entre **30 e 50 árvores**, equilibrando desempenho e tempo de execução.
+
+---
+

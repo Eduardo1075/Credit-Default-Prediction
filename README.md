@@ -310,3 +310,141 @@ Você pode usar essa árvore:
 
 ---
 
+## 12. Distribuição da variável PAY_1 e imputação
+![Grafico](images/transferir(9).png)
+### Visualização:
+- **Gráfico da esquerda:** Distribuição dos valores não nulos da variável `PAY_1`.
+- **Gráfico da direita:** Amostragem aleatória usada para imputar os valores ausentes com a mesma distribuição dos dados originais.
+
+### O que mostra:
+- A maioria dos valores de `PAY_1` está entre -2 e 2, com pico no **valor 0**, indicando pagamento em dia.
+- A distribuição da imputação aleatória respeita a mesma frequência dos dados observados, o que ajuda a evitar **viés** no modelo.
+
+### Conclusão:
+- A imputação aleatória baseada na distribuição dos valores não nulos é uma estratégia apropriada neste caso, pois **mantém a distribuição original** da variável.
+- Essa abordagem é preferível a usar média, mediana ou valores fixos, pois **preserva variabilidade e relações** com outras variáveis.
+
+---
+
+## 13. Imputação baseada em modelo para a variável PAY_1
+![Grafico](images/transferir(8).png)
+### Visualização:
+- **Gráfico da esquerda:** Distribuição dos valores observados (não ausentes) da variável `PAY_1`.
+- **Gráfico da direita:** Distribuição dos valores imputados com base em um modelo preditivo.
+
+### O que mostra:
+- Os valores imputados mantêm **consistência com a distribuição real** da variável.
+- Há uma leve suavização nas extremidades, o que é esperado em modelos preditivos (menos ocorrência de valores extremos como -2 ou 3+).
+- O **valor 0** (pagamento em dia) segue como o mais frequente, respeitando a característica principal da variável.
+
+### Conclusão:
+- A imputação baseada em modelo consegue **capturar padrões complexos nos dados** e prever valores plausíveis.
+- Essa abordagem tende a ser mais precisa do que imputações simples, principalmente quando há **relações entre variáveis** que o modelo pode explorar.
+
+---
+
+## 14. Otimização de Threshold para Maximizar Economia Líquida
+![Grafico](images/transferir(7).png)
+### Gráfico:
+- **Eixo X (Threshold):** Variação do limiar de decisão do modelo (probabilidade de classificar como "inadimplente").
+- **Eixo Y (Net savings - NT$):** Economia líquida obtida em dólares taiwaneses ao aplicar esse threshold nas decisões de crédito.
+
+### Interpretação:
+- A curva mostra que a economia líquida **atinge seu pico em torno de 0.25**.
+- Abaixo de 0.1 e acima de 0.7, os ganhos são quase nulos ou negativos.
+- Isso sugere que **thresholds muito baixos ou muito altos não são ideais** para decisões de crédito, o modelo passa a conceder crédito de forma excessiva ou a recusar crédito lucrativo.
+
+### Conclusão:
+- O limiar ideal de decisão **não é 0.5**, como comumente se usa, mas sim aquele que **maximiza o retorno financeiro**.
+- Neste caso, usar um **threshold por volta de 0.25** é financeiramente mais vantajoso para a instituição.
+
+---
+
+## 15. Avaliação de Investimento em Aconselhamento Financeiro
+![Grafico](images/transferir(6).png)
+### Gráfico:
+- **Eixo X (Upfront investment):** Custo do aconselhamento financeiro por conta (em NT$).
+- **Eixo Y (Net savings per account):** Economia líquida média por conta (em NT$), considerando o impacto da intervenção.
+
+### Interpretação:
+- O gráfico mostra que a economia líquida **aumenta com o investimento até um certo ponto (~NT$2.500–3.000)**.
+- Após esse ponto, a economia líquida por conta começa a **diminuir**, indicando **retorno decrescente**.
+- Isso revela que há um **nível ótimo de investimento** em aconselhamento: gastar mais do que esse valor reduz a eficiência econômica da estratégia.
+
+### Conclusão:
+- O investimento ideal em aconselhamento por cliente deve ficar **em torno de NT$2.500 a NT$3.000**, onde o retorno é maximizado.
+- Acima desse valor, o custo do serviço não compensa os ganhos evitados com inadimplência.
+
+---
+
+## 16. Análise da Flag Rate por Threshold
+![Grafico](images/transferir(5).png)
+### Gráfico:
+- **Eixo X (Threshold):** Limite de probabilidade usado pelo modelo para classificar uma conta como inadimplente.
+- **Eixo Y (Flag rate):** Proporção de contas sinalizadas (ou seja, classificadas como "alto risco") pelo modelo.
+
+### Interpretação:
+- Com **threshold baixo (~0.0–0.1)**, praticamente **todas as contas são sinalizadas** (flag rate próxima de 1.0).
+- À medida que o threshold aumenta, o modelo se torna mais conservador, **sinalizando menos contas**.
+- A partir de um threshold > 0.7, a flag rate é muito baixa, ou seja, **quase nenhuma conta é sinalizada**.
+
+### Conclusão:
+- O gráfico mostra o **trade-off entre cobertura e seletividade**: thresholds baixos cobrem muitos clientes, mas com maior risco de falsos positivos. Thresholds altos sinalizam apenas os casos mais críticos, mas podem deixar de fora inadimplentes reais.
+- É fundamental **alinhar a escolha do threshold** com a **capacidade de intervenção** e a **estratégia de risco da instituição**.
+
+---
+
+## 17. Análise da Curva Precision vs Recall
+![Grafico](images/transferir(4).png)
+### Gráfico:
+- **Eixo X (Recall):** Proporção de inadimplentes corretamente identificados pelo modelo (*verdadeiros positivos / total de inadimplentes*).
+- **Eixo Y (Precision):** Proporção de sinalizações corretas (*verdadeiros positivos / total de sinalizações*).
+
+### Interpretação:
+- O gráfico mostra o clássico **trade-off entre precisão e sensibilidade**:
+  - Em **thresholds mais baixos**, o modelo captura mais inadimplentes (alta **recall**), mas com muitos falsos positivos (baixa **precision**).
+  - Em **thresholds mais altos**, o modelo só sinaliza os casos mais óbvios (alta **precision**), mas perde muitos inadimplentes reais (baixa **recall**).
+
+- A curva **cai continuamente**, o que é típico de modelos de classificação binária. Quanto mais se amplia a captura (recall), maior o custo em termos de precisão.
+
+### Conclusão:
+- A escolha do threshold ideal depende do **custo da intervenção vs. benefício da recuperação**.
+- É importante analisar essa curva junto com:
+  - **Net Savings** (para saber o ponto de maior retorno financeiro);
+  - **Flag rate** (para saber o impacto operacional);
+  - E, se disponível, **F1-score** ou curvas de custo-benefício.
+
+---
+
+## 18. Análise de Precision e Recall por Threshold
+![Grafico](images/transferir(2).png)
+### Gráfico:
+- **Eixo X (Threshold):** Valor de corte para classificar uma instância como inadimplente.
+- **Eixo Y:** Métricas de desempenho (Precision e Recall).
+
+### Interpretação:
+- **Precision (linha azul):**
+  - Aumenta conforme o threshold sobe.
+  - Isso indica que o modelo se torna mais seletivo: sinaliza menos pessoas, mas com maior chance de estarem corretas (menos falsos positivos).
+
+- **Recall (linha laranja):**
+  - Diminui conforme o threshold sobe.
+  - Isso mostra que o modelo perde mais inadimplentes reais (mais falsos negativos).
+
+### Trade-off:
+- Há um ponto onde **precision ≈ recall**, geralmente por volta de **threshold 0.3 a 0.4**.
+- Esse ponto costuma ser um **bom candidato para balancear performance**, especialmente se os **custos de falsos positivos e falsos negativos forem semelhantes**.
+
+### Relacionamento com Net Savings:
+Combinando com o gráfico de Net Savings anterior:
+- O **pico de economia líquida (NT$)** ocorreu em torno de **threshold 0.25 a 0.3**.
+- Isso sugere que **maximizar lucro não significa ter a melhor precisão ou recall individualmente**, mas sim um equilíbrio entre ambos.
+
+### Conclusão:
+- **Threshold ideal ≈ 0.25–0.3**, onde:
+  - O modelo ainda captura uma boa quantidade de inadimplentes (bom recall),
+  - Mantendo uma precisão aceitável,
+  - E **maximizando o retorno financeiro** (Net Savings).
+
+---
+

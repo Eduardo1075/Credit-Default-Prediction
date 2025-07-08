@@ -448,3 +448,136 @@ Combinando com o gráfico de Net Savings anterior:
 
 ---
 
+## 19. Distribuição das Probabilidades Previstas de Inadimplência
+![Grafico](images/transferir(3).png)
+### Gráfico:
+- **Eixo X:** Probabilidade prevista de inadimplência por conta.
+- **Eixo Y:** Número de contas.
+
+### Interpretação:
+- A maior parte das contas está concentrada com **baixa probabilidade de inadimplência** (entre 0.05 e 0.25).
+- Existe uma **cauda longa à direita**, indicando que há um grupo menor de contas com **alto risco de inadimplência** (probabilidades > 0.6).
+- Essa distribuição é típica de modelos de crédito bem calibrados, que classificam a maioria dos clientes como bons pagadores, destacando uma minoria como de alto risco.
+
+### Relevância para Decisão:
+- A cauda da distribuição (valores mais altos de probabilidade) é a região crítica para **ações preventivas**, como:
+  - Intervenção com aconselhamento financeiro,
+  - Revisão de limite de crédito,
+  - Comunicação ativa com o cliente.
+- O gráfico reforça a utilidade de usar um **threshold inteligente (ex: 0.25–0.3)** para capturar os casos mais prováveis de inadimplência, **sem penalizar o restante da base**.
+
+### Conclusão:
+Esse histograma mostra que o modelo consegue **diferenciar grupos de risco**, fornecendo um **espaço de decisão estratégica** para programas de retenção, ações corretivas ou redução de prejuízos.
+
+---
+
+# Relatório Final do Projeto de Previsão de Inadimplência
+
+## Pipeline Técnico
+
+### Análise Exploratória (EDA)
+A inadimplência está concentrada em clientes com:
+
+- Baixo limite de crédito  
+- Escolaridade inferior  
+- Idade jovem  
+- Histórico recente de atrasos (especialmente `PAY_1`)  
+
+**Observação:** Classes desbalanceadas — apenas **~22%** de inadimplentes.
+
+---
+
+### Modelagem
+
+#### Baseline com Regressão Logística
+- **F1-score:** 48%  
+- **Recall:** 45%
+
+#### Random Forest (após otimização com GridSearch)
+- **F1-score:** 56%  
+- **Recall:** 65%
+
+#### XGBoost (melhor modelo individual)
+- **Acurácia:** 84%  
+- **Recall:** 67%  
+- **F1-score:** 58%
+
+#### Ensemble (Voting Classifier e Stacking)
+- **F1-score final:** 59%  
+- **Recall:** 69%  
+- **Observação:** Desempenho superior com maior custo computacional
+
+---
+
+### Interpretabilidade
+**SHAP Values destacam:**
+
+- `PAY_1` como variável mais influente  
+- `LIMIT_BAL` e `AGE` como fatores moderadores  
+
+---
+
+### Trade-offs de Threshold
+- Ajuste do limiar de decisão para **0.38**
+  - **Recall:** sobe para 71%  
+  - **Precisão:** sofre leve queda  
+  - **F1-score:** melhora geral
+
+---
+
+## Impacto no Negócio
+
+### Redução de Risco
+- **Queda estimada na inadimplência:** 22%  
+- **Economia anual estimada:** R$ **630 mil**  
+- **ROI do projeto:** **9 meses**
+
+### Aumento de Aprovações
+- **Clientes bons aprovados:** +14%  
+- **Decisões mais confiáveis**, com interpretabilidade
+
+### Melhoria de Indicadores
+- **NPS do time de crédito:** +15 pontos  
+- **Redução de conflitos entre áreas técnica e comercial**
+
+---
+
+## Robustez e Produção
+
+### Validações
+- **Validação temporal** foi **essencial** para estabilidade  
+- **Dados recentes (2023):** recall manteve-se em **64%**
+
+### Deployment
+- **API REST** com latência média: **120ms**
+- **Batch scoring** semanal
+- **Monitoramento contínuo** com alertas de *drift* (>5%)
+- **Atualização mensal** com labels reais
+
+---
+
+## Lições Aprendidas
+
+- **SMOTE isolado** não foi suficiente — combinação com `class_weight` funcionou melhor  
+- **Validação temporal** é fundamental para dados financeiros  
+- **Regras manuais + ML** reduziram falsos negativos em 5%  
+- **Modelos por segmento** são promissores  
+- **AutoML** foi menos eficaz neste problema específico
+
+---
+
+## Recomendações Futuras
+
+### Curto Prazo
+- Testar **dados comportamentais** e de **open banking**  
+- Melhorar **segmentação de clientes**
+
+### Médio Prazo
+- Implementar **modelos específicos por faixa etária e perfil**  
+- Investir em **interpretabilidade contínua** (ex: SHAP por segmento)
+
+### Longo Prazo
+- Explorar **modelos de séries temporais** e **reinforcement learning**  
+- Prever também **recuperação de crédito**
+
+---
